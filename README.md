@@ -3,8 +3,7 @@
 
 ## Steps to install, set up environment, and run code
 
-Clone repo and install [requirements.txt](https://github.com/TINAOO/yolov5-web-app/blob/main/requirements.txt) 
-
+Clone repo 
 
 ```bash
 git clone https://github.com/TINAOO/yolov5-web-app.git # clone
@@ -18,7 +17,7 @@ Activate the environment
 ```bash
 . venv/bin/activate
 ```
-Within the activated environment, use the following command to install all requirements:
+Within the activated environment, use the following command to all install [requirements.txt](https://github.com/TINAOO/yolov5-web-app/blob/main/requirements.txt):
 ```bash
 python3 -m pip install --upgrade pip  # upgrade pip if necessary
 pip3 install -r requirements.txt  # install
