@@ -9,8 +9,6 @@ Clone repo and install [requirements.txt](https://github.com/TINAOO/yolov5-web-a
 ```bash
 git clone https://github.com/TINAOO/yolov5-web-app.git # clone
 cd yolov5-web-app
-python3 -m pip install --upgrade pip  # upgrade pip if necessary
-pip3 install -r requirements.txt  # install
 ```
 Create an environment for flask
 ```bash
@@ -20,9 +18,10 @@ Activate the environment
 ```bash
 . venv/bin/activate
 ```
-Within the activated environment, use the following command to install Flask:
+Within the activated environment, use the following command to install all requirements:
 ```bash
-pip3 install Flask
+python3 -m pip install --upgrade pip  # upgrade pip if necessary
+pip3 install -r requirements.txt  # install
 ```
 
 Start run the project
