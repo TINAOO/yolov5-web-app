@@ -50,7 +50,10 @@ Processed video and text file are saved in the `static` directory
 ## Implementation details
 If you need to make changes on the parameters to run detect.py, go to [app.py](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py)
 
-- In app.py, [run detect.py](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=subprocess.run(%5B%27python3%27%2C%20%27detect.py%27%2C%20%27%2D%2Dsource%27%2C%20os.path.join(uploads_dir%2C%20secure_filename(video.filename))%2C%20%27%2D%2Dsave%2Dtxt%27%5D)) and update it with prefered parameters for your need
+- In `app.py`, [run detect.py](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=subprocess.run(%5B%27python3%27%2C%20%27detect.py%27%2C%20%27%2D%2Dsource%27%2C%20os.path.join(uploads_dir%2C%20secure_filename(video.filename))%2C%20%27%2D%2Dsave%2Dtxt%27%5D)) with prefered parameters for your need
+```bash
+subprocess.run(['python3', 'detect.py', '--source', os.path.join(uploads_dir, secure_filename(video.filename)), '--save-txt']) 
+```
 
 Details on text file row-counting implementation, go to [app.py](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=count%20%3D%200,.close()). Code block is pasted below for your reference.
 - In this code block, `count` is the variable to track the number of rows in the text file. `count` is incrementing at [`count = count + 1`](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=count%20%3D%20count%20%2B%201%20%23%20counting%20rows%20in%20the%20text%20file%2C%20increment%20count%20as%20we%20go%20thru%20line)
@@ -70,7 +73,7 @@ count = 0 # initialize a variable to count rows in the file
 file.close()
 ```
 
-- Row count is returned to `index.js` file, along with user's uploaded video name. [Code block as shown below.](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=obj%20%3D%20secure_filename,return%20data)
+- Row count is returned to `index.js` file, along with user's uploaded video name. [Code block is shown below.](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=obj%20%3D%20secure_filename,return%20data)
 ```bash
 obj = secure_filename(video.filename) # video file name. For instance, street_vid.mp4
 data = obj + ":" + str(count) # return file name and count of rows as data to ---> index.js file
