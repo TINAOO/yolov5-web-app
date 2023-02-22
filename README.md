@@ -52,8 +52,8 @@ If you need to make changes on the parameters to run detect.py, go to [app.py](h
 
 - In app.py, [run detect.py](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=subprocess.run(%5B%27python3%27%2C%20%27detect.py%27%2C%20%27%2D%2Dsource%27%2C%20os.path.join(uploads_dir%2C%20secure_filename(video.filename))%2C%20%27%2D%2Dsave%2Dtxt%27%5D)) and update it with prefered parameters for your need
 
-Details on text file row-counting implementation, go to [app.py](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=count%20%3D%200,.close()). Code block is pasted below for youre reference.
-- In this code block, `count` is the variable to track number of rows in the text file. `count` is incrementing at [`count = count + 1`](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=count%20%3D%20count%20%2B%201%20%23%20counting%20rows%20in%20the%20text%20file%2C%20increment%20count%20as%20we%20go%20thru%20line)
+Details on text file row-counting implementation, go to [app.py](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=count%20%3D%200,.close()). Code block is pasted below for your reference.
+- In this code block, `count` is the variable to track the number of rows in the text file. `count` is incrementing at [`count = count + 1`](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=count%20%3D%20count%20%2B%201%20%23%20counting%20rows%20in%20the%20text%20file%2C%20increment%20count%20as%20we%20go%20thru%20line)
 
 ```bash
 count = 0 # initialize a variable to count rows in the file
@@ -67,7 +67,7 @@ count = 0 # initialize a variable to count rows in the file
                         count = count + 1 # counting rows in the text file, increment count as we go thru line
                         file.write(frame+' ') # write frame number  
                         file.write(line)
-    file.close()
+file.close()
 ```
 
 - Row count is returned to `index.js` file, along with user's uploaded video name. [Code block as shown below.](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=obj%20%3D%20secure_filename,return%20data)
@@ -77,11 +77,29 @@ data = obj + ":" + str(count) # return file name and count of rows as data to --
 return data
 ```
 
-- In `index.js` file, we get data returned from [ `app.py`](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=obj%20%3D%20secure_filename,return%20data). The data is parsed to get video name and row number. [Code block as shown below.](https://github.com/TINAOO/yolov5-web-app/blob/main/static/index.js#:~:text=%24(%22%23download,to%20%2D%2D%2D%3E%20index.html) Then, the row number is passed to [`index.html`](https://github.com/TINAOO/yolov5-web-app/blob/main/templates/index.html) file to render the number of rows on the web page.
+- In `index.js` file, we get data returned from [ `app.py`](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=obj%20%3D%20secure_filename,return%20data). 
+
+The data is [parsed](https://github.com/TINAOO/yolov5-web-app/blob/main/static/index.js#:~:text=vid_name%20%3D%20data,count%20from%20data) to get video name and row number. [As shown below.](https://github.com/TINAOO/yolov5-web-app/blob/main/static/index.js#:~:text=vid_name%20%3D%20data,count%20from%20data)
+```bash
+vid_name = data.split(":")[0] // parse vid name from data
+num_rows = data.split(":")[1] // parse row count from data
+```
+
+Then, the row number is [passed](https://github.com/TINAOO/yolov5-web-app/blob/main/static/index.js#:~:text=%24(%22%23row%22).html(%22number%20of%20rows%3A%20%22%2Bnum_rows)%20//%20pass%20number%20of%20rows%20to%20%2D%2D%2D%3E%20index.html) to [`index.html`](https://github.com/TINAOO/yolov5-web-app/blob/main/templates/index.html) file to be rendered on the web page. Along with download link for processed video and result text file. All saved in `static` folder. [As shown below.](https://github.com/TINAOO/yolov5-web-app/blob/main/static/index.js#:~:text=%24(%22%23download,%2Bnum_rows))
 ```bash
 $("#download").attr("href", "static/" + vid_name); // download link for processed video
 $("#download-txt").attr("href", "static/" + vid_name.split(".")[0]+"_result.txt"); // download link for text result
 $("#row").html("number of rows: "+num_rows) // pass number of rows to ---> index.html
 ```
 
-
+- `index.html` render the UI components. [Code block is pasted below.](https://github.com/TINAOO/yolov5-web-app/blob/main/templates/index.html#:~:text=%3Cdiv%20id,%3C/span%3E)
+```bash
+<div id="link1">
+  <a href="" id="download" download>Download video</a>
+    </div>
+      <div id="link2"> 
+        <a href="" id="download-txt" download>Download text file</a>
+      </div>
+      <!-- get number of rows from index.js and render on webpage -->
+      <span id="row"></span> 
+```
