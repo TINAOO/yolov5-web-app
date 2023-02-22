@@ -34,11 +34,16 @@ Upload video by choosing the mp4 file. Then visit http://127.0.0.1:5000/ in your
 Processed video and text file are saved in the `static` directory
 
 <p align="center">
-<img src="" width="450">
+<img src="https://github.com/TINAOO/yolov5-web-app/blob/main/1.png" width="450">
 </p>
 
 <p align="center">
-<img src="" width="450">
+<img src="https://github.com/TINAOO/yolov5-web-app/blob/main/2.png" width="450">
 </p>
+
+<p align="center">
+<img src="https://github.com/TINAOO/yolov5-web-app/blob/main/3.png" width="450">
+</p>
+
 
 
