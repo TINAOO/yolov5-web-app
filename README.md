@@ -9,7 +9,7 @@ Clone repo and install [requirements.txt](https://github.com/TINAOO/yolov5-web-a
 ```bash
 git clone https://github.com/TINAOO/yolov5-web-app.git # clone
 cd yolov5-web-app
-pip install --upgrade pip  # upgrade pip if necessary
+python3 -m pip install --upgrade pip  # upgrade pip if necessary
 pip3 install -r requirements.txt  # install
 ```
 Create an environment for flask
