@@ -63,13 +63,13 @@ count = tracking(d, file_path) # get number of particles
 - Particles count is returned to `index.js` file, along with user's uploaded video name. [Code block is shown below.](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=obj%20%3D%20secure_filename,return%20data)
 ```bash
 obj = secure_filename(video.filename) # video file name. For instance, street_vid.mp4
-data = obj + ":" + str(count) # return file name and count of rows as data to ---> index.js file
+data = obj + ":" + str(count) # return file name and count of particles as data to ---> index.js file
 return data
 ```
 
 - In `index.js` file, we get data returned from [ `app.py`](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=obj%20%3D%20secure_filename,return%20data). 
 
-The data is [parsed](https://github.com/TINAOO/yolov5-web-app/blob/main/static/index.js#:~:text=vid_name%20%3D%20data,count%20from%20data) to get video name and row number. [As shown below.](https://github.com/TINAOO/yolov5-web-app/blob/main/static/index.js#:~:text=vid_name%20%3D%20data,count%20from%20data)
+The data is [parsed](https://github.com/TINAOO/yolov5-web-app/blob/main/static/index.js#:~:text=vid_name%20%3D%20data,count%20from%20data) to get video name and pargicle count. [As shown below.](https://github.com/TINAOO/yolov5-web-app/blob/main/static/index.js#:~:text=vid_name%20%3D%20data,count%20from%20data)
 ```bash
 vid_name = data.split(":")[0] // parse vid name from data
 num_particles = data.split(":")[1] // parse particle count from data
