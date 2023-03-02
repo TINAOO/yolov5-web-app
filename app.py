@@ -63,8 +63,6 @@ def tracking(d, file_path):
         #print(temp)
     toc = time.time()
     print("Time taken to process files=",-1*(tic-toc))
-    print("len: ", len(d['id'].unique()))
-    print(d)
 
     # overwirte existed text file
     if os.path.exists(file_path):
@@ -73,7 +71,7 @@ def tracking(d, file_path):
     with open(file_path, 'a') as f:
         dfAsString = d.to_string(header=True, index=False)
         f.write(dfAsString)
-    return len(d['id'].unique())
+    return len(d['id'].unique()) # return number of particles
 
 @app.route("/detect", methods=['POST'])
 def detect():
@@ -120,10 +118,10 @@ def detect():
     d=d.sort_values(by = ['# frame'], ascending = [True]) 
     d['id'] = -1
 
-    count = tracking(d, file_path)
+    count = tracking(d, file_path) # get number of particles
             
-    obj = secure_filename(video.filename) # video file name. For instance, street_vid.mp4
-    data = obj + ":" + str(count) # return file name and count of rows as data to ---> index.js file
+    obj = secure_filename(video.filename) # video file name. For instance, cell_vid.mp4
+    data = obj + ":" + str(count) # return file name and number of particles as data to ---> index.js file
     return data
 
 @app.route("/opencam", methods=['GET'])

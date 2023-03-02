@@ -14,7 +14,7 @@ window.onload = () => {
       $.ajax({
         url: "/detect", 
         type: "POST",
-        data: formData, // get data from app.py in the format of [video_name : row_number]
+        data: formData, // get data from app.py in the format of [video_name : particle_count]
         cache: false,
         processData: false,
         contentType: false,
@@ -23,16 +23,16 @@ window.onload = () => {
           console.log(data.getAllResponseHeaders());
           $("#link").css("visibility", "hidden");
         },
-        success: function (data) { // data we got from app.py in the format of [video_name : row_number]
+        success: function (data) { // data we got from app.py in the format of [video_name : particle_count]
           $("#loader").css("visibility", "hidden");
           vid_name = data.split(":")[0] // parse vid name from data
-          num_rows = data.split(":")[1] // parse row count from data
+          num_particles = data.split(":")[1] // parse particle count from data
           $("#link1").css("visibility", "visible");
           $("#link2").css("visibility", "visible");
           $("#row").css("visibility", "visible");
           $("#download").attr("href", "static/" + vid_name); // download link for processed video
           $("#download-txt").attr("href", "static/" + vid_name.split(".")[0]+"_result.txt"); // download link for text result
-          $("#row").html("number of particles: "+num_rows) // pass number of rows to ---> index.html
+          $("#row").html("number of particles: "+num_particles) // pass number of particles to ---> index.html
         },
       });
     }
