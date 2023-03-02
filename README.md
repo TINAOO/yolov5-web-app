@@ -53,7 +53,7 @@ If you need to make changes on the parameters to run detect.py, go to [app.py](h
 subprocess.run(['python3', 'detect.py', '--source', os.path.join(uploads_dir, secure_filename(video.filename)), '--save-txt']) 
 ```
 
-Details on particle tracking implementation, go to `tracking` function in [app.py](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=count%20%3D%200,.close()). Code block is pasted below for your reference.
+Details on particle tracking implementation, go to `tracking` function in [app.py](https://github.com/TINAOO/yolov5-web-app/blob/main/app.py#:~:text=count%20%3D%200,.close()). In function `detect`, `tracking` is called and the returned value is recorded in a variable `count`. Code block is pasted below for your reference.
 - In this code block, `count` is the variable to record the number of particles in the text file. 
 
 ```bash
