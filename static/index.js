@@ -31,7 +31,7 @@ window.onload = () => {
           $("#link2").css("visibility", "visible");
           $("#row").css("visibility", "visible");
           $("#download").attr("href", "static/" + vid_name); // download link for processed video
-          $("#download-txt").attr("href", "static/" + vid_name.split(".")[0]+"_result.txt"); // download link for text result
+          $("#download-txt").attr("href", "static/" + vid_name.split(".")[0]+".txt"); // download link for text result
           $("#row").html("number of particles: "+num_particles) // pass number of particles to ---> index.html
         },
       });

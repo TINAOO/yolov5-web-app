@@ -1,5 +1,5 @@
 from re import DEBUG, sub
-from flask import Flask, render_template, request, redirect, send_file, url_for
+from flask import Flask, render_template, request, redirect, send_file, url_for, send_file
 from werkzeug.utils import secure_filename, send_from_directory
 import os
 import subprocess
@@ -10,13 +10,13 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import warnings
+import re
 
 app = Flask(__name__)
 
 
 uploads_dir = os.path.join(app.instance_path, 'uploads')
 app_dir = os.path.dirname(app.instance_path)
-
 os.makedirs(uploads_dir, exist_ok=True)
 
 @app.route("/")
@@ -73,13 +73,17 @@ def tracking(d, file_path):
         f.write(dfAsString)
     return len(d['id'].unique()) # return number of particles
 
-@app.route("/detect", methods=['POST'])
+@app.route("/detect", methods=['GET','POST'])
 def detect():
-    if not request.method == "POST":
+    if not request.method in ['GET','POST']:
         return
     video = request.files['video']
     video.save(os.path.join(uploads_dir, secure_filename(video.filename)))
     name = video.filename.split('.')[0]
+    # parse video name
+    while not name[0].isalnum(): name = name[1:] # video name must start with alphanumeric
+    name = re.sub(r'\W+', '_', name) 
+    while not name[-1].isalnum(): name = name[0:-1]
     labels_dir = os.path.join(app_dir, 'static', 'labels')
     if os.path.exists(labels_dir):
         shutil.rmtree(labels_dir)
@@ -90,8 +94,8 @@ def detect():
 
     file_list = os.listdir(labels_dir) # get all label files
     result_dir = os.path.join(app_dir, 'static') # save combined result to this directory
-    file_path = os.path.join(result_dir, name+'_result.txt') # combined text file path
-    
+    file_path = os.path.join(result_dir, name+'.txt') # combined text file path
+    print("NAME file path  ",file_path)
     # overwrite existed text file
     if os.path.exists(file_path):
         os.remove(file_path)
@@ -119,10 +123,18 @@ def detect():
     d['id'] = -1
 
     count = tracking(d, file_path) # get number of particles
-            
+    
     obj = secure_filename(video.filename) # video file name. For instance, cell_vid.mp4
     data = obj + ":" + str(count) # return file name and number of particles as data to ---> index.js file
     return data
+
+@app.route("/retrieve/<file>", methods=['GET'])
+def retrieve(file):
+    print('RETRIEVEING file: ',file)
+    result_dir = os.path.join(app_dir, 'static')
+    file_path = os.path.join(result_dir, file)
+    print('RETRIEVEING file path: ', file_path)
+    return send_file(file_path)
 
 @app.route("/opencam", methods=['GET'])
 def opencam():
