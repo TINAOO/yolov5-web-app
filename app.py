@@ -78,19 +78,19 @@ def detect():
     if not request.method in ['GET','POST']:
         return
     video = request.files['video']
-    video.save(os.path.join(uploads_dir, secure_filename(video.filename)))
-    name = video.filename.split('.')[0]
     # parse video name
+    name = video.filename.split('.')[0]
     while not name[0].isalnum(): name = name[1:] # video name must start with alphanumeric
     name = re.sub(r'\W+', '_', name) 
     while not name[-1].isalnum(): name = name[0:-1]
+    video.save(os.path.join(uploads_dir, secure_filename(name+".mp4")))
     labels_dir = os.path.join(app_dir, 'static', 'labels')
     if os.path.exists(labels_dir):
         shutil.rmtree(labels_dir)
 
     subprocess.run("ls")
     # run the detect.py file with parameters
-    subprocess.run(['python3', 'detect.py', '--source', os.path.join(uploads_dir, secure_filename(video.filename)), '--save-txt']) 
+    subprocess.run(['python3', 'detect.py', '--source', os.path.join(uploads_dir, secure_filename(name+".mp4")), '--save-txt']) 
 
     file_list = os.listdir(labels_dir) # get all label files
     result_dir = os.path.join(app_dir, 'static') # save combined result to this directory
@@ -102,13 +102,12 @@ def detect():
 
     with open(file_path,'w') as file: 
         for f in file_list:
-            if(name in f):
-                substr1_split = f.split('.')[0].split('_')
-                frame = substr1_split[len(substr1_split)-1] # last element of substr arry = frame number
-                with open(os.path.join(labels_dir, f)) as input_file:
-                    for line in input_file: # iterate each line in all label files
-                        file.write(frame+' ') # write frame number  
-                        file.write(line)
+            substr1_split = f.split('.')[0].split('_')
+            frame = substr1_split[len(substr1_split)-1] # last element of substr arry = frame number
+            with open(os.path.join(labels_dir, f)) as input_file:
+                for line in input_file: # iterate each line in all label files
+                    file.write(frame+' ') # write frame number  
+                    file.write(line)
     file.close()
 
     # Column names to be added
@@ -124,7 +123,7 @@ def detect():
 
     count = tracking(d, file_path) # get number of particles
     
-    obj = secure_filename(video.filename) # video file name. For instance, cell_vid.mp4
+    obj = secure_filename(name+".mp4") # video file name. For instance, cell_vid.mp4
     data = obj + ":" + str(count) # return file name and number of particles as data to ---> index.js file
     return data
 
